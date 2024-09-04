@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>質問と回答</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        label, input, textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input, textarea {
+            padding: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>質問と回答</h1>
+    <form id="questionForm">
+        <label for="questionInput">質問:</label>
+        <input type="text" id="questionInput" name="question" required>
+        <button type="button" id="questionButton">質問する</button>
+    </form>
+    <h2>回答:</h2>
+    <textarea id="answerTextarea" rows="5" readonly></textarea>
+
+    <script>
+        let myUrl = "{{ url_for('query.query_execute') }}";
+
+        document.getElementById('questionButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            var question = document.getElementById('questionInput').value;
+            let formData = new FormData();
+            formData.append('question', question);
+            
+            // fetch APIを使用してPOSTリクエストを送信
+            fetch(myUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('answerTextarea').value = data.answer;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

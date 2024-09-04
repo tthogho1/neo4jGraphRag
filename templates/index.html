@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Wikipedia Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        label[for="wiki_title"] {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        /* ローディングスピナーのスタイル */
+        .spinner {
+            display: none; /* 初期状態では非表示 */
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Input Wikipedia Title</h1>
+    <form action="{{ url_for('create.create_page') }}" method="POST">
+        <label for="wiki_title">Wikipedia Title:</label>
+        <input type="text" id="wiki_title" name="wiki_title" required>
+        <input type="submit" value="Create">
+    </form>
+    <!-- ローディングスピナー -->
+    <div class="spinner" id="loadingSpinner"></div>
+
+    <script>
+        const form = document.getElementById('wikiForm');
+        const spinner = document.getElementById('loadingSpinner');
+        const submitButton = form.querySelector('input[type="submit"]');
+
+        form.addEventListener('submit', function() {
+            spinner.style.display = 'block';
+            submitButton.disabled = true;
+        });
+    </script>
+</body>
+</html>
